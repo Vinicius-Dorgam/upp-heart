@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo Românticos</title>
+    <style>
+         :root {
+            --primary: #ff6b6b;
+            --secondary: #ff8e8e;
+            --accent: #ff4d94;
+            --light: #ffe8f0;
+            --dark: #a83a6e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #fff5f7, #ffeef2);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        h1 {
+            color: var(--dark);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .game-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(168, 58, 110, 0.15);
+            width: 350px;
+            height: 450px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .game-title {
+            color: var(--dark);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        /* Estilos específicos para cada jogo */
+        /* Jogo 1: Coração Clicável */
+        
+        #heartGame {
+            background: linear-gradient(145deg, #fff0f5, #ffe6ee);
+        }
+        
+        #heartTarget {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        #heartTarget:hover {
+            transform: scale(1.1);
+        }
+        
+        .heart {
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            position: relative;
+            transform: rotate(-45deg);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .heart:before,
+        .heart:after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .heart:before {
+            top: -50%;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: 50%;
+        }
+        
+        #scoreDisplay {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        /* Jogo 2: Quiz Romântico */
+        
+        #quizGame {
+            background: linear-gradient(145deg, #f0f9ff, #e6f4ff);
+        }
+        
+        .question-container {
+            text-align: center;
+            margin-bottom: 20px;
+            min-height: 80px;
+        }
+        
+        #question {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .option {
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .option:hover {
+            background: var(--light);
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            background: var(--accent);
+            color: white;
+            border-color: var(--dark);
+        }
+        
+        #submitBtn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+            box-shadow: 0 4px 10px rgba(255, 77, 148, 0.3);
+        }
+        
+        #submitBtn:hover {
+            background: var(--dark);
+        }
+        /* Jogo 3: Combinador de Casais */
+        
+        #matchingGame {
+            background: linear-gradient(145deg, #f8f0ff, #f2e6ff);
+        }
+        
+        .characters-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        
+        .character {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: grab;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        
+        .character:hover {
+            transform: scale(1.1);
+        }
+        
+        .match-zone {
+            width: 100%;
+            height: 120px;
+            background: rgba(255, 182, 193, 0.2);
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .match-slot {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px dashed var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .heart-animation {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--accent);
+            animation: floatUp 1.5s forwards;
+        }
+        /* Botões e controles comuns */
+        
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-shadow: 0 4px 10px rgba(255, 77, 148, 0.3);
+            margin-top: 15px;
+        }
+        
+        .btn:hover {
+            background: var(--dark);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        /* Animações */
+        
+        @keyframes pulse {
+            0% {
+                transform: rotate(-45deg) scale(1);
+            }
+            50% {
+                transform: rotate(-45deg) scale(1.1);
+            }
+            100% {
+                transform: rotate(-45deg) scale(1);
+            }
+        }
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+        
+        .game-instructions {
+            color: var(--dark);
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--dark);
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        /* Responsividade */
+        
+        @media (max-width: 768px) {
+            .game-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .game-card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>❤ feito por Vinicius Dorgam ❤</h1>
+        <p class="subtitle">com amor para você!</p>
+    </header>
+
+    <div class="game-container">
+        <!-- Jogo 1: Coração Clicável -->
+        <div class="game-card" id="heartGame">
+            <h2 class="game-title">Coração Clicável</h2>
+            <div class="game-content">
+                <div id="scoreDisplay">0</div>
+                <div id="heartTarget">
+                    <div class="heart"></div>
+                </div>
+                <div class="game-instructions">
+                    Clique no coração antes que ele desapareça!<br> Quanto mais você clicar, maior é o meu amor por você!
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn" id="startHeartBtn">Começar</button>
+                <button class="btn" id="resetHeartBtn">Reiniciar</button>
+            </div>
+            <script>
+                const heartTarget = document.getElementById('heartTarget');
+                const startHeartBtn = document.getElementById('startHeartBtn');
+                const resetHeartBtn = document.getElementById('resetHeartBtn');
+                const scoreDisplay = document.getElementById('scoreDisplay');
+
+                let score = 0;
+                let gameActive = false;
+                let speed = 1500;
+
+                function moveHeart() {
+                    if (!gameActive) return;
+
+                    const gameArea = heartTarget.parentElement;
+                    const maxX = gameArea.offsetWidth - heartTarget.offsetWidth;
+                    const maxY = gameArea.offsetHeight - heartTarget.offsetHeight;
+
+                    const newX = Math.floor(Math.random() * maxX);
+                    const newY = Math.floor(Math.random() * maxY);
+
+                    heartTarget.style.left = `${newX}px`;
+                    heartTarget.style.top = `${newY}px`;
+
+                    // Aumenta a dificuldade
+                    speed = Math.max(300, speed - 90);
+
+                    setTimeout(moveHeart, speed);
+                }
+
+                function handleHeartClick() {
+                    if (!gameActive) return;
+
+                    score++;
+                    scoreDisplay.textContent = score;
+
+                    // Feedback visual
+                    heartTarget.style.transform = 'scale(1.3)';
+                    setTimeout(() => {
+                        heartTarget.style.transform = 'scale(1)';
+                    }, 200);
+                }
+
+                startHeartBtn.addEventListener('click', () => {
+                    gameActive = true;
+                    score = 0;
+                    speed = 1500;
+                    scoreDisplay.textContent = score;
+                    moveHeart();
+                    startHeartBtn.textContent = 'Jogando...';
+                    startHeartBtn.disabled = true;
+                    heartTarget.style.display = 'block';
+                });
+
+                resetHeartBtn.addEventListener('click', () => {
+                    gameActive = false;
+                    score = 0;
+                    scoreDisplay.textContent = score;
+                    startHeartBtn.textContent = 'Começar';
+                    startHeartBtn.disabled = false;
+                    heartTarget.style.display = 'none';
+                });
+
+                heartTarget.addEventListener('click', handleHeartClick);
+            </script>
